@@ -10,17 +10,17 @@ outfile_opened = open(outfile,"w")
 
 outstring = ""
 
-grep_transcript_file = "Rs_Rv_rename_good.gff3.grep.transcript"
+grep_transcript_file = "H_sch_gene_calls_v1_Apollo_with_gene.gff.grep.transcript"
 grep_transcript_file_opened = open(grep_transcript_file)
 grep_transcript_file_read = grep_transcript_file_opened.read()
 grep_transcript_file_read_split = grep_transcript_file_read.split("\n")
 
-grep_start_codon_file = "Rs_Rv_rename_good.gff3.grep.start_codon_per_transcript"
+grep_start_codon_file = "H_sch_gene_calls_v1_Apollo_with_gene.gff.grep.start_codon_per_transcript"
 grep_start_codon_file_opened = open(grep_start_codon_file)
 grep_start_codon_file_read = grep_start_codon_file_opened.read()
 grep_start_codon_file_read_split = grep_start_codon_file_read.split("\n")
 
-grep_gene_file = "Rs_Rv_rename_good.gff3.grep.gene"
+grep_gene_file = "H_sch_gene_calls_v1_Apollo_with_gene.gff.grep.gene"
 grep_gene_file_opened = open(grep_gene_file)
 grep_gene_file_read = grep_gene_file_opened.read()
 grep_gene_file_read_split = grep_gene_file_read.split("\n")
@@ -29,7 +29,7 @@ skip = 0
 #this gets general info about the genes.
 for line in grep_transcript_file_read_split:
     if len(line) >1:
-        #print line
+        #print (line)
         linesplit = line.split ("\t")
         scaffold = linesplit[0]
         direction = linesplit[6]
@@ -37,12 +37,13 @@ for line in grep_transcript_file_read_split:
         pre_transcript_name_split = pre_transcript_name.split(";")
         transcript_name_with_ID = pre_transcript_name_split[0]
         transcript_name = transcript_name_with_ID[3:]
-        #print transcript_name
+        #print (transcript_name)
         transcript_name_split = transcript_name.split(".")
         gene_name = transcript_name_split[0]
-        #print gene_name
-        gene_name_base = gene_name[:1]
-        gene_name_number = int(gene_name[1:])
+        #print (gene_name)
+        gene_name_splitz = gene_name.split("_")
+        gene_name_base = gene_name_splitz[0]+"_"+gene_name_splitz[1]+"_"
+        gene_name_number = int(gene_name_splitz[2])
         #print (gene_name_base)
         #print (str(gene_name_number))
         
@@ -61,8 +62,7 @@ for line in grep_transcript_file_read_split:
                         start_location_inc_codon = linessplit[3]
                         new_gene_number = gene_name_number +1
                         upstream_gene_name = gene_name_base+ str(new_gene_number)
-                        #print gene_name
-                        #print upstream_gene_name
+                        #print (str(gene_name) + " "+ str(upstream_gene_name))
                         
                     if direction is "+":
                         start_location = linessplit[3]
@@ -81,25 +81,26 @@ for line in grep_transcript_file_read_split:
 
                     for liners in grep_gene_file_read_split:
                         if len (liners) >1:
-                            #print liners
+                            #print (liners)
+                            #print (upstream_gene_name)
                             linerssplit = liners.split ("\t")
                             scaffold = linesplit[0]
-                            if liners.endswith(upstream_gene_name+";"):
+                            if liners.endswith(upstream_gene_name):
                                 scaff_of_upstream = linerssplit[0]
-                                #print "\n"
-                                #print "gene_name = " + gene_name
-                                #print "direction = " + direction
-                                #print scaffold
-                                #print lines
+                                #print ("\n")
+                                #print ("gene_name = " + gene_name)
+                                #print ("direction = " + direction)
+                                #print (scaffold)
+                                #print (lines)
 
-                                #print "upstream gene_name = " + upstream_gene_name
-                                #print scaff_of_upstream
+                                #print ("upstream gene_name = " + upstream_gene_name)
+                                #print (scaff_of_upstream)
                                 
                                 if scaff_of_upstream.endswith(scaffold):
                                     #print liners
                                     if direction is "-":
                                         end_location = linerssplit[3]
-                                        #print "interval is " + start_location + " to " + end_location + "\n"
+                                        #print ("interval is " + start_location + " to " + end_location + "\n")
                                         first_number = int(start_location_inc_codon)-1
                                         #if do not want ATG then first_number = start_location - also change in else belwo for when at end of scaff
                                         second_number = int(end_location)-1
