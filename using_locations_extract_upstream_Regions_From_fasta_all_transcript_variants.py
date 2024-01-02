@@ -1,7 +1,7 @@
 #requires output of previous script + fasta file of genome.
 #creates two files (one for each direction) of upstream regions - the minus needs to be rev comped (i think)
 
-genome_file = "Rs_Rv_assembly.fasta.fa"
+genome_file = "Cam_Hsc_genome1.2.fa"
 genome_file_opened = open(genome_file)
 genome_file_read = genome_file_opened.read()
 genome_file_read_split = genome_file_read.split(">")
