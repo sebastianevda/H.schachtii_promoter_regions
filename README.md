@@ -8,7 +8,7 @@ gff grepped for "transcript\t"
 run "extract_upstream_regions_moded_without_gene_in_gene.py"
 creates "locations_of_upstream_regions_per_gene.tab" and "skiplist.txt"
 
-then run "skiplist parsing.py"
+then run "skiplistparsing.py"
 creates "locations_of_upstream_regions_per_gene.tab.skipped"
 
 then run "using_locations_extract_upstream_Regions_From_fasta_all_transcript_variants.py"
